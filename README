@@ -1,0 +1,3 @@
+tsnake is a terminal snake game built to run on bash in Unix based operating systems. There is  one optional argument that defines the frame rate for the game in fps.  If not provided the default is 16.  The controles are standard "wasd" with cntrl-q used to quit. tsnake creates a play area the size of the terminal window.
+
+Compile with the make command in the tsnake directory.
