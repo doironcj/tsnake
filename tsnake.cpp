@@ -1,3 +1,7 @@
+
+
+
+
 #include"snake.h"
 #include"terminal_control.h"
 #include <time.h>
@@ -13,6 +17,7 @@
 
 Snake player(1);
 pthread_mutex_t snake_direction_mtx;
+pthread_mutex_t pause_mtx;
 bool exit_flag = false;
 class frame_timer
 {
@@ -38,6 +43,7 @@ class frame_timer
 
 void * Snake_input_handler(void * s){
         char key;
+        bool pause = false;
     while(read(STDIN_FILENO,&key,1)){
 pthread_mutex_lock (&snake_direction_mtx);
     switch(key){
@@ -55,6 +61,22 @@ pthread_mutex_lock (&snake_direction_mtx);
         break;
         case CTRL_KEY('q'):
         exit_flag = true;
+        if(pause){
+             pause = false;
+            pthread_mutex_unlock (&pause_mtx);
+        }
+        break;
+        case 'p':
+        if(pause){
+            pause = false;
+            pthread_mutex_unlock (&pause_mtx);
+        }
+        else{
+            pause = true;
+            pthread_mutex_lock (&pause_mtx);
+
+        }
+
     }
 pthread_mutex_unlock (&snake_direction_mtx);
     }
@@ -86,17 +108,21 @@ int main( int argc, char ** argv){
     this will insure that if a key is registered it will be applied to 
     the change direction function before the snake moves*/
     pthread_mutex_init(&snake_direction_mtx,NULL);
+    pthread_mutex_init(&pause_mtx,NULL);
 
 
 
 enableRawMode();
 ftimer.start();
-while(player.print_frame() && !exit_flag){
+while(!exit_flag  && player.print_frame()){
     ftimer.wait_restart();/*this function waits for the timer to finish to return*/
     pthread_mutex_lock (&snake_direction_mtx);
     player.move();
     pthread_mutex_unlock (&snake_direction_mtx);
-    
+
+    pthread_mutex_lock (&pause_mtx);
+    pthread_mutex_unlock (&pause_mtx);
+
 }
 
 
@@ -109,5 +135,3 @@ player.print_score();
 
 return 0;
  }
-
-
