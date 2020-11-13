@@ -4,14 +4,14 @@
 #include "coordinates.h"
 #include "frame_buffer.h"
 
-#include <list>
+#include <deque>
 
 enum Direction {up=0,down=1,left=2,right=3};
 
 
 class Snake {
 /*each snake segment and token is a coordinate*/
-std::list<Coordinates> segments;
+std::deque<Coordinates> segments;
 Coordinates * tokens;
 /*added segments will appear as the snake moves*/
 int pending_segment = 0;

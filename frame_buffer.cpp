@@ -66,7 +66,7 @@ std::cout << std::flush;
 the draw function returns 0 if a set of coordinates was drawn to twice or 
 they are out of bounds to allow for collision detection*/
 
-int Frame_Buffer::draw(std::list<Coordinates> coords){
+int Frame_Buffer::draw(std::deque<Coordinates> coords){
 
 int no_collision = 1;
 for( Coordinates c : coords){

@@ -2,7 +2,7 @@
 #ifndef FRAME_BUFFER_H
 #define FRAME_BUFFER_H
 #include "coordinates.h"
-#include <list>
+#include <deque>
 
 class Frame_Buffer{
     int width;
@@ -17,7 +17,7 @@ class Frame_Buffer{
     void print_buffer();
     void clear_buffer();
     /*returns integer to wether the snake is a valid position or not*/
-    int draw(std::list<Coordinates>);
+    int draw(std::deque<Coordinates>);
     int draw(Coordinates *,int);
 };
 #endif
